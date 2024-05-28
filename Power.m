@@ -3,8 +3,8 @@ function [curPower]=Power(group,type)
     combin=[6 ,9 ,15,16,16,10,26,12,18,18,6 ,4 ,4 ,14,8 ,6 ,6 ,6 ;
             4 ,3 ,1 ,6 ,8 ,5 ,8 ,4 ,7 ,3 ,3 ,2 ,2 ,4 ,4 ,2 ,2 ,2 ];%可不連續電器的組合種類
            %LD LD EK AC AC ED WP EO PH DW DW RC RC WM WM MW MW TT
-    num = [2,3,5,6,7,8,9,11,13,15,17,18];%type 1~12的電器對應的combin位置
-    power = [1.26,1.5,1,1.2,2,1.8,1.1,1.8,0.73,0.8,0.38,0.9,0.8]
+    num = [2,3,5,6,7,8,9,11,13,15,17,18]                          ;%type 1~12的電器對應的combin位置
+    power = [1.26,1.5,1,1.2,2,1.8,1.1,1.8,0.73,0.8,0.38,0.9,0.8];
     %連續非連續分開計算
     %準備計算組合的data
     if type == 1 || type == 3 || type == 8 || type == 9 || type == 10 || type == 11
@@ -31,10 +31,10 @@ function [curPower]=Power(group,type)
     %計算結果
     if type <= 7
         if len == 2
-            firstPart = floor((group + idx1 - 1) / idx1)
-            secondPart =  mod(group,idx1)
+            firstPart = floor((group + idx1 - 1) / idx1);
+            secondPart =  mod(group,idx1);
             if secondPart==0 
-                secondPart = idx1
+                secondPart = idx1;
             end
             first = curP(1)*getNthCombination(n1,k1,firstPart);
             second = curP(2)*getNthCombination(n2,k2,secondPart);
@@ -52,6 +52,7 @@ function [curPower]=Power(group,type)
             curPower = curP(1) * ans;
         else 
             if group > n2-k2+1
+                group = group - (n2-k2+1);
                 first = curP(1) * continueCom(n1,k1,group);
                 second = zeros(1,n2);
             else

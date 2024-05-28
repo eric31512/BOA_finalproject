@@ -5,15 +5,17 @@ function main(obj)
     Min=[1      , 1     , 1          , 1     , 1         , 1     , 1         , 1     , 1         , 1     , 1     , 1];
     %    烘衣機  熱水壺    冷氣         電熱器   加壓馬達     烤箱    PHEV        洗碗機   煮飯機      洗衣機   微波爐  烤土司機
 
-    groupNum = 75;  %族群數
+    groupNum = 50;  %族群數
     dimention = 12;  %變數個數    c:\Users\User\Desktop\BOA_implement\groupInit.m
     totalIter=50;   %遞迴數
     %----------
     group=GroupInit(Max,Min,groupNum);
     Best_sol=inf;
+    Best_Group = zeros(1,12);
     Convergence=zeros(1,totalIter);
 
     for C = 1:totalIter
+        disp(C);
         %取出最佳值與最佳族群
         % For limiting out of bound solutions and setting best solution and
         % objective function value
@@ -29,6 +31,7 @@ function main(obj)
             if(Best_sol>fitness)
                 Best_sol=fitness;
                 Best_X=group(i,:);
+                Best_Group = group(i,:);
             end
         end
         theta = C/totalIter;
@@ -76,10 +79,10 @@ function main(obj)
             %進行演算法中的算式
             if fitFunction(group(ii,:))<fitFunction(group(k,:))
                 r=rand()*ones(1,dimention);
-                newGroup(ii,:)=group(ii,:)+r.*( group(ii,:) - group(k,:) );
+                newGroup(ii,:)=group(ii,:)+round(r.*( group(ii,:) - group(k,:) ));
             else
                 r=rand()*ones(1,dimention);
-                newGroup(ii,:)=group(ii,:)+r.*( - group(ii,:) + group(k,:) );
+                newGroup(ii,:)=group(ii,:)+round(r.*( - group(ii,:) + group(k,:) ));
             end 
         end 
         %選出較佳的group
@@ -96,5 +99,12 @@ function main(obj)
         Convergence(C)=Best_sol;
         X(C)=C;
     end
+    sum = zeros(1,48);
+    for i = 1:12
+        curP = Power(Best_Group(i),i);
+        sum = sum + curP;
+        disp(curP);
+    end
+    disp(sum);
     plot(X,Convergence);
 end
